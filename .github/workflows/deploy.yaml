@@ -1,0 +1,31 @@
+name: File Sorting Workflow
+
+on:
+  push:
+    paths:
+      - '**/*'  # Monitor changes to all files
+
+jobs:
+  sort_files:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: List Files and Sort
+      run: |
+        for file in *; do
+          if [[ $file == *NDA* ]]; then
+            echo "$file" 
+          elif [[ $file == *GGA* ]]; then
+            echo "$file" 
+          elif [[ $file == *CAD* ]]; then
+            echo "$file" 
+          elif [[ $file == *AUS* ]]; then
+            echo "$file" 
+          elif [[ $file == *US* ]]; then
+            echo "$file" 
+          fi
+        done
+      shell: bash
