@@ -19,11 +19,14 @@ jobs:
 
     - name: Find and Deploy Files
       run: |
-        for file in $(find . -type f -name '*' -path '*/AU/*' -o -path '*/CAD/*' -o -path '*/GGA/*' -o -path '*/NDA/*' -o -path '*/US/*' -o -path '*/US/*'); do
+        for file in $(find . -type f \( -path '*/AU/*' -o -path '*/CAD/*' -o -path '*/GGA/*' -o -path '*/NDA/*' -o -path '*/US/*' \)); do
           folder=$(basename "$(dirname "$file")")
           filename=$(basename "$file")
           
-          if [ "$folder" == "$filename" ]; then
-            echo "Uploading $filename to Tomcat server: $folder"
+          # Remove the file extension from the filename
+          filename_no_ext="${filename%.*}"
+
+          if [ "$folder" == "$filename_no_ext" ]; then
+            echo "Uploading $filename to Tomcat server in folder: $folder"
           fi
         done
