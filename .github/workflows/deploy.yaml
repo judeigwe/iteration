@@ -1,31 +1,29 @@
-name: File Sorting Workflow
+name: Upload and Deploy Files
 
 on:
   push:
     paths:
-      - '**/*'  # Monitor changes to all files
+      - 'AU/**'
+      - 'CAD/**'
+      - 'GGA/**'
+      - 'NDA/**'
+      - 'US/**'
 
 jobs:
-  sort_files:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out the code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: List Files and Sort
+    - name: Find and Deploy Files
       run: |
-        for file in *; do
-          if [[ $file == *NDA* ]]; then
-            echo "$file" 
-          elif [[ $file == *GGA* ]]; then
-            echo "$file" 
-          elif [[ $file == *CAD* ]]; then
-            echo "$file" 
-          elif [[ $file == *AUS* ]]; then
-            echo "$file" 
-          elif [[ $file == *US* ]]; then
-            echo "$file" 
+        for file in $(find . -type f -name '*' -path '*/AU/*' -o -path '*/CAD/*' -o -path '*/GGA/*' -o -path '*/NDA/*' -o -path '*/US/*' -o -path '*/US/*'); do
+          folder=$(basename "$(dirname "$file")")
+          filename=$(basename "$file")
+          
+          if [ "$folder" == "$filename" ]; then
+            echo "Uploading $filename to Tomcat server: $folder"
           fi
         done
-      shell: bash
